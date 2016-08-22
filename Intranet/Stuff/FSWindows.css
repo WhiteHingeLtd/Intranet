@@ -1,0 +1,147 @@
+﻿.closebutton{
+    right: 8px;
+    top: 8px;
+    position: absolute;
+    font-size: 11pt;
+    font-weight: normal;
+}
+
+body{
+        font-family:"Segoe UI";
+    font-size:11pt;
+
+}
+#headerbar{
+    height: 50px;
+    padding: 8px;
+    border-bottom: 1px solid #3c3c3c;
+    background-color: #1b1b1b;
+    color: #b7b7b7;
+    font-size: 14pt;
+    font-weight: bold;
+    position: fixed;
+    width: 100%;
+    left: 0px;
+    top:0px;
+}
+
+#StatusBarDiv{
+    position:fixed;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    border-top:1px solid #999;
+    background-color:#333;
+    color:#ccc;
+    height:35px;
+    font-size:12px;
+    padding:3px;
+}
+
+.floatright{float:right;}
+
+#IC_Sidebar {
+    position: fixed;
+    width: 12%;
+    bottom: 35px;
+    border-right:1px solid #b7b7b7;
+    background-color:#ffffff;
+    padding:8px;
+    overflow:auto;
+}
+#IC_Explorer{
+    position: fixed;
+    top:50px;
+    bottom:35px;
+    width:88%;
+    right:0px;
+    background-color:#e8e8e8;
+    overflow:auto;
+}
+#IC_Ribbon{
+    position:fixed;
+    top:50px;
+    overflow:hidden;
+    right:0px;
+    left:0px;
+    background-color:#f4f4f4;
+    border-bottom:1px solid #b7b7b7;
+}
+
+#RibbonToggle{
+    position:absolute;
+    background-image:url("Sprites.png");
+    top:4px;
+    right:4px;
+    width:20px;
+    height:20px;
+    border:1px solid #ddd;
+    
+}
+#RibbonToggle:hover{background-color:#b6ddff;}
+
+#RibbonToggle.RibbonContracted{background-position:-145px 2px;}
+#RibbonToggle.RibbonExpanded{background-position:2px 2px;}
+
+#IC_Ribbon.RibbonExpanded{
+    height:150px;
+}
+#IC_Ribbon.RibbonContracted{
+    height:30px;
+}
+#IC_Sidebar.RibbonExpanded, #IC_Explorer.RibbonExpanded{
+    Top:200px;
+}
+#IC_Sidebar.RibbonContracted, #IC_Explorer.RibbonContracted{
+    top:80px;
+}
+
+/*      TABS        */
+.tabItem{
+    display:none;
+}
+.tabItem.selected{
+    display: block;
+height: 119px;
+background-color: #f4f4f4;
+padding: 4px;
+}
+#tabtitles{background-color:#fff; border-bottom:1px solid #999;height:30px;padding-top:2px;padding-left:40px;}
+.tabTitle{
+    padding-left: 35px;
+padding-right: 35px;
+margin-right:10px;
+font-size: 14px;
+padding-top: 3px;
+padding-bottom: 3px;
+background-color: #fff;
+border: 1px solid #ffffff;
+border-bottom: 1px solid #999;
+cursor: pointer;
+display: inline-block;
+}
+.tabTitle.selected{
+    background-color: #f4f4f4;
+border: 1px solid #999;
+border-bottom: 1px solid #f4f4f4;
+}
+
+.CoolButton{
+    background-color:inherit;
+    padding:2px;
+    font-size:9pt;
+    padding-left:26px;
+    background-image:url(Sprites.png);
+    margin:5px;
+    text-align:left !important;
+    background-position: 0px -44px;
+    min-width:100px;
+    display:inline-block;
+    height:22px;
+    border:none;
+}
+.CoolButton:hover{
+    border: 1px solid #528dd5;
+    background-color:#cbe4ff;
+    margin:4px;
+}
