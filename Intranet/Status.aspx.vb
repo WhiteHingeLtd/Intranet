@@ -43,71 +43,77 @@ Public Class Status
 
     Public Sub InternalFiles()
         'SkuData
-        Dim skud As TimeSpan = Status.Data.sku_generator
-        If skud.Minutes > 90 Then
+
+        Dim skud As TimeSpan = status.Data.sku_generator
+        Dim SkuGenMsg As String = "A file which contains most data for every item we stock. This is the file that almost all applications load and is the reason everything takes forever to start up."
+        If skud.Minutes > 100 Then
             NoGoodStatus("Sku Generator", States.Down)
-            AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago")
-        ElseIf skud.Minutes > 40 Then
+            AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
+        ElseIf skud.Minutes > 50 Then
             NoGoodStatus("Sku Generator", States.Mid)
-            AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago")
+            AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
         Else
-            AddControl("Sku Generator", States.Up, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago")
+            AddControl("Sku Generator", States.Up, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
         End If
 
         'TRS
-        Dim trs As TimeSpan = Status.Data.order_server_trays
+        Dim trs As TimeSpan = status.Data.order_server_trays
+        Dim OSTrayMsg As String = "A data file containing a list of all trays and the orders contained within them. This is mostly only used by the Supervisor PC."
         If trs.Minutes > 5 Then
             NoGoodStatus("Order Server", States.Down)
-            AddControl("Order Server | Trays", States.Down, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Trays", States.Down, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
         ElseIf trs.Minutes > 2 Then
             NoGoodStatus("Order Server", States.Mid)
-            AddControl("Order Server | Trays", States.Mid, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Trays", States.Mid, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
         Else
-            AddControl("Order Server | Trays", States.Up, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Trays", States.Up, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
         End If
 
         'Orddef
-        Dim orddef As TimeSpan = Status.Data.order_server_orders
+        Dim orddef As TimeSpan = status.Data.order_server_orders
+        Dim OSOrdersMsg As String = "A data file containing a slimmed down version of all orders currently in the system. This file should never be more than half an hour old. It is created by Order Server and used by all of the warehouse applications."
         If orddef.Minutes > 30 Then
             NoGoodStatus("Order Server", States.Down)
-            AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
         ElseIf orddef.Minutes > 15 Then
             NoGoodStatus("Order Server", States.Mid)
-            AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
         Else
-            AddControl("Order Server | Orders", States.Up, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago")
+            AddControl("Order Server | Orders", States.Up, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
         End If
 
         'Linnworks Export - Processed
-        Dim lipr As TimeSpan = Status.Data.linnworks_export_processed
+        Dim lipr As TimeSpan = status.Data.linnworks_export_processed
+        Dim LinExpProcMsg As String = "A file containing usually around 6 weeks worth of processed orders. They send this file to us every half hour. It's used to calculate sales data and used in various other calculations."
         If lipr.Minutes > 60 Then
             NoGoodStatus("Linnworks Exports", States.Down)
-            AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago")
+            AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago", LinExpProcMsg)
         ElseIf lipr.Minutes > 30 Then
             NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Processed Export", States.Mid, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago")
+            AddControl("Linnworks Processed Export", States.Mid, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
         Else
-            AddControl("Linnworks Processed Export", States.Up, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago")
+            AddControl("Linnworks Processed Export", States.Up, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
         End If
 
         'Linnworks Export - Stock
-        Dim list As TimeSpan = Status.Data.linnworks_export_inventory
+        Dim list As TimeSpan = status.Data.linnworks_export_inventory
+        Dim linexpstockmsg As String = "A file containing all of the stock levels in Linnworks is sent from them to us every half hour. It is then imported into Brian and then the system will have up to date stock levels."
         If list.Minutes > 60 Then
             NoGoodStatus("Linnworks Exports", States.Down)
-            AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago")
+            AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago", linexpstockmsg)
         ElseIf list.Minutes > 30 Then
             NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago")
+            AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
         Else
-            AddControl("Linnworks Stock Export", States.Up, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago")
+            AddControl("Linnworks Stock Export", States.Up, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
         End If
 
         'MySQL Database
         If Not status.Data.mysql_database Then
             NoGoodStatus("MySQL Database", States.Down)
-            AddControl("MySQL Database", States.Down, InternalPanel)
+            AddControl("MySQL Database", States.Down, InternalPanel, "", "The datbase hosted on Brian.")
         Else
-            AddControl("MySQL Database", States.Up, InternalPanel)
+            AddControl("MySQL Database", States.Up, InternalPanel, "", "The datbase hosted on Brian.")
         End If
 
     End Sub
@@ -116,9 +122,9 @@ Public Class Status
         'eBay.co.uk
         If Not status.Data.ebay Then
             NoGoodStatus("Ebay.co.uk", States.Down)
-            AddControl("Ebay UK", States.Down, ExternalPanel)
+            AddControl("Ebay UK", States.Down, ExternalPanel, "", "Ebay.co.uk")
         Else
-            AddControl("Ebay UK", States.Up, ExternalPanel)
+            AddControl("Ebay UK", States.Up, ExternalPanel, "", "Ebay.co.uk")
         End If
         'eBay API
         'If Not status.Data.ebay_api Then
@@ -129,11 +135,12 @@ Public Class Status
         'End If
 
         'Amazon
+
         If Not status.Data.amazon Then
             NoGoodStatus("Amazon UK", States.Down)
-            AddControl("Amazon UK", States.Down, ExternalPanel)
+            AddControl("Amazon UK", States.Down, ExternalPanel, "", "Amazon.co.uk")
         Else
-            AddControl("Amazon UK", States.Up, ExternalPanel)
+            AddControl("Amazon UK", States.Up, ExternalPanel, "", "Amazon.co.uk")
         End If
         'Amazon API
         If Not status.Data.amazon_productapi Then
@@ -152,30 +159,34 @@ Public Class Status
         '    AddControl("Linnworks", States.Up, ExternalPanel)
         'End If
         'Net
+        Dim LinNetMsg As String = "This is the main Linnworks.net site. Nothing more really."
         If Not status.Data.linnworks_net Then
             NoGoodStatus("Linnworks.net", States.Down)
-            AddControl("Linnworks.NET", States.Down, ExternalPanel)
+            AddControl("Linnworks.NET", States.Down, ExternalPanel, "", LinNetMsg)
         Else
-            AddControl("Linnworks.NET", States.Up, ExternalPanel)
+            AddControl("Linnworks.NET", States.Up, ExternalPanel, "", LinNetMsg)
         End If
         'API x3
+        Dim LinApiMsg As String = "api.linnworks.net is Linnworks\' main API gateway. This server tells us where to send our requests after logging in with Linnworks Authorization. Linnworks Desktop also uses this."
         If Not status.Data.linnworks_api_api Then
             NoGoodStatus("Linnworks API", States.Down)
-            AddControl("Linnworks API", States.Down, ExternalPanel)
+            AddControl("Linnworks API", States.Down, ExternalPanel, "", LinApiMsg)
         Else
-            AddControl("Linnworks API", States.Up, ExternalPanel)
+            AddControl("Linnworks API", States.Up, ExternalPanel, "", LinApiMsg)
         End If
-        If Not status.Data.linnworks_api_eu1 Then
-            NoGoodStatus("Linnworks API - EU", States.Down)
-            AddControl("Linnworks API EU", States.Down, ExternalPanel)
+        Dim LinEC2msg As String = "The EC2 forwarder is a Linnworks server which manages connections from us to their new database servers based on the Amazon Web Services Elastic Compute infrastructure. The amazon servers are extremely unlikely to be down, so if we\'re having issues with linnworks, it\'s probably down to this."
+        If Not status.Data.linnworks_api_ext Then
+            NoGoodStatus("Linnworks AWS EC2 Forwarder", States.Down)
+            AddControl("Linnworks AWS EC2 Forwarder", States.Down, ExternalPanel, "", LinEC2msg)
         Else
-            AddControl("Linnworks API EU", States.Up, ExternalPanel)
+            AddControl("Linnworks AWS EC2 Forwarder", States.Up, ExternalPanel, "", LinEC2msg)
         End If
+        Dim LinAuthmsg As String = "apps.linnworks.net is used to allow us to connect to Linnworks Services through the login prompt. That\'s essentially all it\'s used for. "
         If Not status.Data.linnworks_api_apps Then
-            NoGoodStatus("Linnworks API - Apps", States.Down)
-            AddControl("Linnworks API Apps", States.Down, ExternalPanel)
+            NoGoodStatus("Linnworks Authorization", States.Down)
+            AddControl("Linnworks Authorization", States.Down, ExternalPanel, "", LinAuthmsg)
         Else
-            AddControl("Linnworks API Apps", States.Up, ExternalPanel)
+            AddControl("Linnworks Authorization", States.Up, ExternalPanel, "", LinAuthmsg)
         End If
 
     End Sub
@@ -184,28 +195,30 @@ Public Class Status
         'WAY WE@RE USING FRAMEWORK ON THE INTERNET WAHOO
 
         'IAN
-        Dim ian As TimeSpan = Status.Data.ian
+        Dim ian As TimeSpan = status.Data.ian
+        Dim ianmsg As String = "Ian looks after a few user profiles, but is mostly in charge of the order system. Ian contains services such as the Order server and Sku Generator, and also holds the majority of office user profiles."
         If ian.Ticks < 0 Then
             NoGoodStatus("IAN (not responding)", States.Down)
-            AddControl("IAN", States.Down, ServersPanel, "Did not respond within 100ms.")
+            AddControl("IAN", States.Down, ServersPanel, "Did not respond within 100ms.", ianmsg)
         ElseIf ian.Milliseconds > 10 Then
             NoGoodStatus("IAN (slow)", States.Mid)
-            AddControl("IAN", States.Mid, ServersPanel, "Ping time: " + ian.Milliseconds.ToString + "ms.")
+            AddControl("IAN", States.Mid, ServersPanel, "Ping time: " + ian.Milliseconds.ToString + "ms.", ianmsg)
         Else
-            AddControl("IAN", States.Up, ServersPanel, "Ping time: " + Math.Round(ian.Milliseconds, 1).ToString + "ms.")
+            AddControl("IAN", States.Up, ServersPanel, "Ping time: " + Math.Round(ian.Milliseconds, 1).ToString + "ms.", ianmsg)
         End If
 
         'Brian
         Try
-            Dim brian As TimeSpan = Status.Data.brian
+            Dim brian As TimeSpan = status.Data.brian
+            Dim brianmsg As String = "Brian is the main database server. He is the most powerful server we have and is vital to keeping the office running, looking after any database bound services. Brian has nothing to do with the orders systems (although prepack relies on him to get updated product information)."
             If brian.Ticks < 0 Then
                 NoGoodStatus("BRIAN (not responding)", States.Down)
-                AddControl("BRIAN", States.Down, ServersPanel, "Did not respond within 100ms.")
+                AddControl("BRIAN", States.Down, ServersPanel, "Did not respond within 100ms.", brianmsg)
             ElseIf brian.Milliseconds > 10 Then
                 NoGoodStatus("BRIAN (slow)", States.Mid)
-                AddControl("BRIAN", States.Mid, ServersPanel, "Ping time: " + brian.Milliseconds.ToString + "ms.")
+                AddControl("BRIAN", States.Mid, ServersPanel, "Ping time: " + brian.Milliseconds.ToString + "ms.", brianmsg)
             Else
-                AddControl("BRIAN", States.Up, ServersPanel, "Ping time: " + Math.Round(brian.Milliseconds, 1).ToString + "ms.")
+                AddControl("BRIAN", States.Up, ServersPanel, "Ping time: " + Math.Round(brian.Milliseconds, 1).ToString + "ms.", brianmsg)
             End If
         Catch ex As Exception
             AddControl("BRIAN", States.Down, ServersPanel, ex.ToString)
@@ -214,39 +227,42 @@ Public Class Status
 
 
         'Sue
-        Dim sue As TimeSpan = Status.Data.sue
+        Dim sue As TimeSpan = status.Data.sue
+        Dim Suemsg As String = "Sue is primarily a file server, storing all of the application data like analytics and order data, and photos for the listing process. "
         If sue.Ticks < 0 Then
             NoGoodStatus("SUE (not responding)", States.Down)
-            AddControl("SUE", States.Down, ServersPanel, "Did not respond within 100ms.")
+            AddControl("SUE", States.Down, ServersPanel, "Did not respond within 100ms.", Suemsg)
         ElseIf sue.Milliseconds > 10 Then
             NoGoodStatus("SUE (slow)", States.Mid)
-            AddControl("SUE", States.Mid, ServersPanel, "Ping time: " + sue.Milliseconds.ToString + "ms.")
+            AddControl("SUE", States.Mid, ServersPanel, "Ping time: " + sue.Milliseconds.ToString + "ms.", Suemsg)
         Else
-            AddControl("SUE", States.Up, ServersPanel, "Ping time: " + Math.Round(sue.Milliseconds, 1).ToString + "ms.")
+            AddControl("SUE", States.Up, ServersPanel, "Ping time: " + Math.Round(sue.Milliseconds, 1).ToString + "ms.", Suemsg)
         End If
 
         'Old Server
-        Dim old As TimeSpan = Status.Data.old_server
+        Dim old As TimeSpan = status.Data.old_server
+        Dim oldmsg As String = "This server looks after the hosting of this page, a few user profiles and also holds the X drive. It also does a couple of other odd bits."
         If old.Ticks < 0 Then
             NoGoodStatus("Old Server (not responding)", States.Down)
-            AddControl("Old Server", States.Down, ServersPanel, "Did not respond within 100ms.")
+            AddControl("Old Server", States.Down, ServersPanel, "Did not respond within 100ms.", oldmsg)
         ElseIf old.Milliseconds > 10 Then
             NoGoodStatus("Old Server (slow)", States.Mid)
-            AddControl("Old Server", States.Mid, ServersPanel, "Ping time: " + old.Milliseconds.ToString + "ms.")
+            AddControl("Old Server", States.Mid, ServersPanel, "Ping time: " + old.Milliseconds.ToString + "ms.", oldmsg)
         Else
-            AddControl("Old Server", States.Up, ServersPanel, "Ping time: " + Math.Round(old.Milliseconds, 1).ToString + "ms.")
+            AddControl("Old Server", States.Up, ServersPanel, "Ping time: " + Math.Round(old.Milliseconds, 1).ToString + "ms.", oldmsg)
         End If
 
         'Drop1
-        Dim drop1 As TimeSpan = Status.Data.mysql_backup
+        Dim drop1 As TimeSpan = status.Data.mysql_backup
+        Dim drop1msg As String = "This server stores database backups (Generated at 4AM every morning) and also stores assets for our version of the PPRetail Shop."
         If drop1.Ticks < 0 Then
             NoGoodStatus("MySQL Backup Server (not responding)", States.Down)
-            AddControl("MySQL Backup Server", States.Down, ServersPanel, "Did not respond within 400ms.")
+            AddControl("MySQL Backup Server", States.Down, ServersPanel, "Did not respond within 400ms.", drop1msg)
         ElseIf drop1.Milliseconds > 100 Then
             NoGoodStatus("MySQL Backup Server (slow)", States.Mid)
-            AddControl("MySQL Backup Server", States.Mid, ServersPanel, "Ping time: " + drop1.Milliseconds.ToString + "ms.")
+            AddControl("MySQL Backup Server", States.Mid, ServersPanel, "Ping time: " + drop1.Milliseconds.ToString + "ms.", drop1msg)
         Else
-            AddControl("MySQL Backup Server", States.Up, ServersPanel, "Ping time: " + Math.Round(drop1.Milliseconds, 1).ToString + "ms.")
+            AddControl("MySQL Backup Server", States.Up, ServersPanel, "Ping time: " + Math.Round(drop1.Milliseconds, 1).ToString + "ms.", drop1msg)
         End If
     End Sub
 
@@ -283,7 +299,7 @@ Public Class Status
         NoHook = 4
     End Enum
 
-    Private Sub AddControl(Name As String, State As States, Panel As Panel, Optional Subtext As String = "")
+    Private Sub AddControl(Name As String, State As States, Panel As Panel, Optional Subtext As String = "", Optional message As String = "")
         Dim Newcontrol As New Label
 
         Newcontrol.CssClass = "StatusControl"
@@ -309,6 +325,10 @@ Public Class Status
             Newcontrol.Controls.Add(scs)
         Else
             Newcontrol.Text = Name
+        End If
+        If Not message = "" Then
+            Newcontrol.Attributes.Add("onClick", "alert('" + Name + "\r\n\r\n" + message + "');")
+            Newcontrol.ToolTip = message.Replace("\", "")
         End If
 
         Panel.Controls.Add(Newcontrol)

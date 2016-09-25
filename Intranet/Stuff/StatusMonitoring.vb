@@ -40,7 +40,7 @@ Public Class StatusMonitoring
             mysql_backup = PingServerTime("drop1.drops.ad.whitehinge.com", 400)
 
             'Externals
-            linnworks_api_eu1 = GetServerHTTPStatus("eu.linnworks.net", 400)
+            linnworks_api_ext = GetServerHTTPStatus("ext.linnworks.net", 400)
             linnworks_api_apps = GetServerHTTPStatus("apps.linnworks.net", 400)
             linnworks_api_api = GetServerHTTPStatus("api.linnworks.net", 400)
             linnworks_net = GetServerHTTPStatus("www.linnworks.net", 400)
@@ -66,7 +66,7 @@ Public Class StatusMonitoring
         Public despatchbay As Boolean
         Public linnworks_net As Boolean
         Public linnworks_com As Boolean
-        Public linnworks_api_eu1 As Boolean
+        Public linnworks_api_ext As Boolean
         Public linnworks_api_apps As Boolean
         Public linnworks_api_api As Boolean
 
