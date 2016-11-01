@@ -85,10 +85,13 @@ Public Class Status
         'Linnworks Export - Processed
         Dim lipr As TimeSpan = status.Data.linnworks_export_processed
         Dim LinExpProcMsg As String = "A file containing usually around 6 weeks worth of processed orders. They send this file to us every half hour. It's used to calculate sales data and used in various other calculations."
-        If lipr.Minutes > 60 Then
+        If lipr.Ticks = -1 Then
+            NoGoodStatus("Linnworks Exports", States.Down)
+            AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago, Exported empty", LinExpProcMsg)
+        ElseIf lipr.Minutes > 80 Then
             NoGoodStatus("Linnworks Exports", States.Down)
             AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago", LinExpProcMsg)
-        ElseIf lipr.Minutes > 30 Then
+        ElseIf lipr.Minutes > 40 Then
             NoGoodStatus("Linnworks Exports", States.Mid)
             AddControl("Linnworks Processed Export", States.Mid, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
         Else
@@ -98,10 +101,13 @@ Public Class Status
         'Linnworks Export - Stock
         Dim list As TimeSpan = status.Data.linnworks_export_inventory
         Dim linexpstockmsg As String = "A file containing all of the stock levels in Linnworks is sent from them to us every half hour. It is then imported into Brian and then the system will have up to date stock levels."
-        If list.Minutes > 60 Then
+        If list.Ticks = -1 Then
+            NoGoodStatus("Linnworks Exports", States.Down)
+            AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago, Exported empty", linexpstockmsg)
+        ElseIf list.Minutes > 80 Then
             NoGoodStatus("Linnworks Exports", States.Down)
             AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago", linexpstockmsg)
-        ElseIf list.Minutes > 30 Then
+        ElseIf list.Minutes > 40 Then
             NoGoodStatus("Linnworks Exports", States.Mid)
             AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
         Else
@@ -116,39 +122,57 @@ Public Class Status
             AddControl("MySQL Database", States.Up, InternalPanel, "", "The datbase hosted on Brian.")
         End If
 
+        'Sales Data
+        Dim sales As TimeSpan = status.Data.salesdata
+        Dim salesmsg As String = "DAtabase entries for items, based on the legacy Sales Data system which powers reorder and most of Inventory Control."
+        If sales.Ticks = -1 Then
+            NoGoodStatus("Sales Data", States.Down)
+            AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago, Exported empty", salesmsg)
+        ElseIf sales.Totalhours > 60 Then
+            NoGoodStatus("Sales Data", States.Down)
+            AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+        ElseIf sales.Totalhours > 30 Then
+            NoGoodStatus("Sales Data", States.Mid)
+            AddControl("Sales Data", States.Mid, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+        ElseIf sales.Totalhours > 24 Then
+            AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+        Else
+            AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%h") + " hours, " + sales.ToString("%m") + " minutes ago", salesmsg)
+        End If
+
     End Sub
 
     Public Sub CheckExternals()
-        'eBay.co.uk
-        If Not status.Data.ebay Then
-            NoGoodStatus("Ebay.co.uk", States.Down)
-            AddControl("Ebay UK", States.Down, ExternalPanel, "", "Ebay.co.uk")
-        Else
-            AddControl("Ebay UK", States.Up, ExternalPanel, "", "Ebay.co.uk")
-        End If
-        'eBay API
-        'If Not status.Data.ebay_api Then
-        '    NoGoodStatus("Ebay API", States.Down)
-        '    AddControl("Ebay API", States.Down, ExternalPanel)
+        ''eBay.co.uk
+        'If Not status.Data.ebay Then
+        '    NoGoodStatus("Ebay.co.uk", States.Down)
+        '    AddControl("Ebay UK", States.Down, ExternalPanel, "", "Ebay.co.uk")
         'Else
-        '    AddControl("Ebay API", States.Up, ExternalPanel)
+        '    AddControl("Ebay UK", States.Up, ExternalPanel, "", "Ebay.co.uk")
         'End If
+        ''eBay API
+        ''If Not status.Data.ebay_api Then
+        ''    NoGoodStatus("Ebay API", States.Down)
+        ''    AddControl("Ebay API", States.Down, ExternalPanel)
+        ''Else
+        ''    AddControl("Ebay API", States.Up, ExternalPanel)
+        ''End If
 
-        'Amazon
+        ''Amazon
 
-        If Not status.Data.amazon Then
-            NoGoodStatus("Amazon UK", States.Down)
-            AddControl("Amazon UK", States.Down, ExternalPanel, "", "Amazon.co.uk")
-        Else
-            AddControl("Amazon UK", States.Up, ExternalPanel, "", "Amazon.co.uk")
-        End If
-        'Amazon API
-        If Not status.Data.amazon_productapi Then
-            NoGoodStatus("Amazon API", States.Down)
-            AddControl("Amazon API", States.Down, ExternalPanel)
-        Else
-            AddControl("Amazon API", States.Up, ExternalPanel)
-        End If
+        'If Not status.Data.amazon Then
+        '    NoGoodStatus("Amazon UK", States.Down)
+        '    AddControl("Amazon UK", States.Down, ExternalPanel, "", "Amazon.co.uk")
+        'Else
+        '    AddControl("Amazon UK", States.Up, ExternalPanel, "", "Amazon.co.uk")
+        'End If
+        ''Amazon API
+        'If Not status.Data.amazon_productapi Then
+        '    NoGoodStatus("Amazon API", States.Down)
+        '    AddControl("Amazon API", States.Down, ExternalPanel)
+        'Else
+        '    AddControl("Amazon API", States.Up, ExternalPanel)
+        'End If
 
         'LINNWORKS
         ''Com
@@ -252,18 +276,18 @@ Public Class Status
             AddControl("Old Server", States.Up, ServersPanel, "Ping time: " + Math.Round(old.Milliseconds, 1).ToString + "ms.", oldmsg)
         End If
 
-        'Drop1
-        Dim drop1 As TimeSpan = status.Data.mysql_backup
-        Dim drop1msg As String = "This server stores database backups (Generated at 4AM every morning) and also stores assets for our version of the PPRetail Shop."
-        If drop1.Ticks < 0 Then
-            NoGoodStatus("MySQL Backup Server (not responding)", States.Down)
-            AddControl("MySQL Backup Server", States.Down, ServersPanel, "Did not respond within 400ms.", drop1msg)
-        ElseIf drop1.Milliseconds > 100 Then
-            NoGoodStatus("MySQL Backup Server (slow)", States.Mid)
-            AddControl("MySQL Backup Server", States.Mid, ServersPanel, "Ping time: " + drop1.Milliseconds.ToString + "ms.", drop1msg)
-        Else
-            AddControl("MySQL Backup Server", States.Up, ServersPanel, "Ping time: " + Math.Round(drop1.Milliseconds, 1).ToString + "ms.", drop1msg)
-        End If
+        ''Drop1
+        'Dim drop1 As TimeSpan = status.Data.mysql_backup
+        'Dim drop1msg As String = "This server stores database backups (Generated at 4AM every morning) and also stores assets for our version of the PPRetail Shop."
+        'If drop1.Ticks < 0 Then
+        '    NoGoodStatus("MySQL Backup Server (not responding)", States.Down)
+        '    AddControl("MySQL Backup Server", States.Down, ServersPanel, "Did not respond within 400ms.", drop1msg)
+        'ElseIf drop1.Milliseconds > 100 Then
+        '    NoGoodStatus("MySQL Backup Server (slow)", States.Mid)
+        '    AddControl("MySQL Backup Server", States.Mid, ServersPanel, "Ping time: " + drop1.Milliseconds.ToString + "ms.", drop1msg)
+        'Else
+        '    AddControl("MySQL Backup Server", States.Up, ServersPanel, "Ping time: " + Math.Round(drop1.Milliseconds, 1).ToString + "ms.", drop1msg)
+        'End If
     End Sub
 
     Public Sub Jumbotron()

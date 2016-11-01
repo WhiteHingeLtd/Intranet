@@ -30,7 +30,9 @@ Public Class StatusMonitoring
             order_server_orders = CheckFileAge("\\SUE\DFSRoot\AppData\Orders\.orddef")
             linnworks_export_processed = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\processed.csv")
             linnworks_export_inventory = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\inventory.csv")
-            mysql_database = WHLClasses.MySql.TestConn.ToString.StartsWith("Connection to ")
+            mysql_database = WHLClasses.MySQL.TestConn.ToString.StartsWith("Connection to ")
+            salesdata = (Now - (Date.ParseExact(WHLClasses.SelectData("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
+
 
             'Servers
             ian = PingServerTime("IAN")
@@ -77,6 +79,7 @@ Public Class StatusMonitoring
         Public linnworks_export_processed As TimeSpan
         Public linnworks_export_inventory As TimeSpan
         Public mysql_database As Boolean
+        Public salesdata As TimeSpan
 
         'Servers
         Public ian As TimeSpan
