@@ -46,10 +46,10 @@ Public Class Status
 
         Dim skud As TimeSpan = status.Data.sku_generator
         Dim SkuGenMsg As String = "A file which contains most data for every item we stock. This is the file that almost all applications load and is the reason everything takes forever to start up."
-        If skud.Minutes > 100 Then
+        If skud.Minutes > 20 Then
             NoGoodStatus("Sku Generator", States.Down)
             AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
-        ElseIf skud.Minutes > 50 Then
+        ElseIf skud.Minutes > 5 Then
             NoGoodStatus("Sku Generator", States.Mid)
             AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
         Else
@@ -75,7 +75,7 @@ Public Class Status
         If orddef.Minutes > 30 Then
             NoGoodStatus("Order Server", States.Down)
             AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
-        ElseIf orddef.Minutes > 15 Then
+        ElseIf orddef.Minutes > 5 Then
             NoGoodStatus("Order Server", States.Mid)
             AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
         Else
@@ -86,7 +86,7 @@ Public Class Status
         Dim lipr As TimeSpan = status.Data.linnworks_export_processed
         Dim LinExpProcMsg As String = "A file containing usually around 6 weeks worth of processed orders. They send this file to us every half hour. It's used to calculate sales data and used in various other calculations."
         If lipr.Ticks = -1 Then
-            NoGoodStatus("Linnworks Exports", States.Down)
+            NoGoodStatus("Linnworks Exports", States.Mid)
             AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago, Exported empty", LinExpProcMsg)
         ElseIf lipr.Minutes > 80 Then
             NoGoodStatus("Linnworks Exports", States.Down)
@@ -102,7 +102,7 @@ Public Class Status
         Dim list As TimeSpan = status.Data.linnworks_export_inventory
         Dim linexpstockmsg As String = "A file containing all of the stock levels in Linnworks is sent from them to us every half hour. It is then imported into Brian and then the system will have up to date stock levels."
         If list.Ticks = -1 Then
-            NoGoodStatus("Linnworks Exports", States.Down)
+            NoGoodStatus("Linnworks Exports", States.Mid)
             AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago, Exported empty", linexpstockmsg)
         ElseIf list.Minutes > 80 Then
             NoGoodStatus("Linnworks Exports", States.Down)

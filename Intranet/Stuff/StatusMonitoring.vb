@@ -25,7 +25,7 @@ Public Class StatusMonitoring
     Public Class StatusObject
         Public Sub New()
             'Internals 
-            sku_generator = CheckFileAge("\\SUE\DFSRoot\AppData\Collections\Skudata.skuc")
+            sku_generator = CheckFileAge("\\SUE\DFSRoot\AppData\Collections\Sku Collection 1.skus")
             order_server_trays = CheckFileAge("\\SUE\DFSRoot\AppData\Trays\.trs")
             order_server_orders = CheckFileAge("\\SUE\DFSRoot\AppData\Orders\.orddef")
             linnworks_export_processed = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\processed.csv")
