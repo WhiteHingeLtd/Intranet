@@ -59,6 +59,15 @@ Partial Public Class Status
     Protected WithEvents JumboSubtext As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
+    '''TimeLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents TimeLabel As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
     '''ExternalPanel control.
     '''</summary>
     '''<remarks>
@@ -84,13 +93,4 @@ Partial Public Class Status
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents InternalPanel As Global.System.Web.UI.WebControls.Panel
-    
-    '''<summary>
-    '''TimeLabel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents TimeLabel As Global.System.Web.UI.WebControls.Label
 End Class

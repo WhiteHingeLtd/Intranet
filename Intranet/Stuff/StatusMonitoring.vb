@@ -1,4 +1,5 @@
-﻿Imports WHLClasses.MiscFunctions
+﻿Imports System.IO
+Imports WHLClasses.MiscFunctions
 Public Class StatusMonitoring
 
     Public Sub New()
@@ -33,6 +34,9 @@ Public Class StatusMonitoring
             mysql_database = WHLClasses.MySQL.TestConn.ToString.StartsWith("Connection to ")
             salesdata = (Now - (Date.ParseExact(WHLClasses.SelectData("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
 
+            'Backup file
+            Backup = CheckFileAge((New DirectoryInfo("\\vhost-1\E\T and X\")).GetFiles().OrderByDescending(Function(f As FileInfo) f.LastWriteTime).First().FullName)
+
 
             'Servers
             ian = PingServerTime("IAN")
@@ -40,6 +44,9 @@ Public Class StatusMonitoring
             sue = PingServerTime("SUE")
             old_server = PingServerTime("SERVER")
             mysql_backup = PingServerTime("drop1.drops.ad.whitehinge.com", 400)
+            vhost1 = PingServerTime("VHost-1")
+            VHost2 = PingServerTime("Vhost-2")
+            TestServer = PingServerTime("TestServer")
 
             'Externals
             linnworks_api_ext = GetServerHTTPStatus("ext.linnworks.net", 400)
@@ -80,6 +87,7 @@ Public Class StatusMonitoring
         Public linnworks_export_inventory As TimeSpan
         Public mysql_database As Boolean
         Public salesdata As TimeSpan
+        Public Backup As TimeSpan
 
         'Servers
         Public ian As TimeSpan
@@ -87,6 +95,11 @@ Public Class StatusMonitoring
         Public sue As TimeSpan
         Public old_server As TimeSpan
         Public mysql_backup As TimeSpan
+        Public vhost1 As TimeSpan
+        Public VHost2 As TimeSpan
+        Public TestServer As TimeSpan
+        Public Build As TimeSpan
+
     End Class
 
 

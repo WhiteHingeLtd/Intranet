@@ -43,102 +43,151 @@ Public Class Status
 
     Public Sub InternalFiles()
         'SkuData
-
-        Dim skud As TimeSpan = status.Data.sku_generator
-        Dim SkuGenMsg As String = "A file which contains most data for every item we stock. This is the file that almost all applications load and is the reason everything takes forever to start up."
-        If skud.Minutes > 20 Then
-            NoGoodStatus("Sku Generator", States.Down)
-            AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
-        ElseIf skud.Minutes > 5 Then
-            NoGoodStatus("Sku Generator", States.Mid)
-            AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
-        Else
-            AddControl("Sku Generator", States.Up, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
-        End If
+        Try
+            Dim skud As TimeSpan = status.Data.sku_generator
+            Dim SkuGenMsg As String = "A file which contains most data for every item we stock. This is the file that almost all applications load and is the reason everything takes forever to start up."
+            If skud.Minutes > 20 Then
+                NoGoodStatus("Sku Generator", States.Down)
+                AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
+            ElseIf skud.Minutes > 5 Then
+                NoGoodStatus("Sku Generator", States.Mid)
+                AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
+            Else
+                AddControl("Sku Generator", States.Up, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'TRS
-        Dim trs As TimeSpan = status.Data.order_server_trays
-        Dim OSTrayMsg As String = "A data file containing a list of all trays and the orders contained within them. This is mostly only used by the Supervisor PC."
-        If trs.Minutes > 5 Then
-            NoGoodStatus("Order Server", States.Down)
-            AddControl("Order Server | Trays", States.Down, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
-        ElseIf trs.Minutes > 2 Then
-            NoGoodStatus("Order Server", States.Mid)
-            AddControl("Order Server | Trays", States.Mid, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
-        Else
-            AddControl("Order Server | Trays", States.Up, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
-        End If
+        Try
+            Dim trs As TimeSpan = status.Data.order_server_trays
+            Dim OSTrayMsg As String = "A data file containing a list of all trays and the orders contained within them. This is mostly only used by the Supervisor PC."
+            If trs.Minutes > 5 Then
+                NoGoodStatus("Order Server", States.Down)
+                AddControl("Order Server | Trays", States.Down, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
+            ElseIf trs.Minutes > 2 Then
+                NoGoodStatus("Order Server", States.Mid)
+                AddControl("Order Server | Trays", States.Mid, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
+            Else
+                AddControl("Order Server | Trays", States.Up, InternalPanel, "last updated: " + trs.ToString("%m") + " mins " + trs.ToString("%s") + " secs" + " ago", OSTrayMsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'Orddef
-        Dim orddef As TimeSpan = status.Data.order_server_orders
-        Dim OSOrdersMsg As String = "A data file containing a slimmed down version of all orders currently in the system. This file should never be more than half an hour old. It is created by Order Server and used by all of the warehouse applications."
-        If orddef.Minutes > 30 Then
-            NoGoodStatus("Order Server", States.Down)
-            AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
-        ElseIf orddef.Minutes > 5 Then
-            NoGoodStatus("Order Server", States.Mid)
-            AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
-        Else
-            AddControl("Order Server | Orders", States.Up, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
-        End If
+        Try
+            Dim orddef As TimeSpan = status.Data.order_server_orders
+            Dim OSOrdersMsg As String = "A data file containing a slimmed down version of all orders currently in the system. This file should never be more than half an hour old. It is created by Order Server and used by all of the warehouse applications."
+            If orddef.Minutes > 30 Then
+                NoGoodStatus("Order Server", States.Down)
+                AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
+            ElseIf orddef.Minutes > 5 Then
+                NoGoodStatus("Order Server", States.Mid)
+                AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
+            Else
+                AddControl("Order Server | Orders", States.Up, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'Linnworks Export - Processed
-        Dim lipr As TimeSpan = status.Data.linnworks_export_processed
-        Dim LinExpProcMsg As String = "A file containing usually around 6 weeks worth of processed orders. They send this file to us every half hour. It's used to calculate sales data and used in various other calculations."
-        If lipr.Ticks = -1 Then
-            NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago, Exported empty", LinExpProcMsg)
-        ElseIf lipr.Minutes > 80 Then
-            NoGoodStatus("Linnworks Exports", States.Down)
-            AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago", LinExpProcMsg)
-        ElseIf lipr.Minutes > 40 Then
-            NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Processed Export", States.Mid, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
-        Else
-            AddControl("Linnworks Processed Export", States.Up, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
-        End If
+        Try
+            Dim lipr As TimeSpan = status.Data.linnworks_export_processed
+            Dim LinExpProcMsg As String = "A file containing usually around 6 weeks worth of processed orders. They send this file to us every half hour. It's used to calculate sales data and used in various other calculations."
+            If lipr.Ticks = -1 Then
+                NoGoodStatus("Linnworks Exports", States.Mid)
+                AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago, Exported empty", LinExpProcMsg)
+            ElseIf lipr.Minutes > 80 Then
+                NoGoodStatus("Linnworks Exports", States.Down)
+                AddControl("Linnworks Processed Export", States.Down, InternalPanel, "last updated: " + lipr.ToString("%h") + " hour(s) " + lipr.ToString("%m") + " mins" + " ago", LinExpProcMsg)
+            ElseIf lipr.Minutes > 40 Then
+                NoGoodStatus("Linnworks Exports", States.Mid)
+                AddControl("Linnworks Processed Export", States.Mid, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
+            Else
+                AddControl("Linnworks Processed Export", States.Up, InternalPanel, "last updated: " + lipr.ToString("%m") + " minutes ago", LinExpProcMsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'Linnworks Export - Stock
-        Dim list As TimeSpan = status.Data.linnworks_export_inventory
-        Dim linexpstockmsg As String = "A file containing all of the stock levels in Linnworks is sent from them to us every half hour. It is then imported into Brian and then the system will have up to date stock levels."
-        If list.Ticks = -1 Then
-            NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago, Exported empty", linexpstockmsg)
-        ElseIf list.Minutes > 80 Then
-            NoGoodStatus("Linnworks Exports", States.Down)
-            AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago", linexpstockmsg)
-        ElseIf list.Minutes > 40 Then
-            NoGoodStatus("Linnworks Exports", States.Mid)
-            AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
-        Else
-            AddControl("Linnworks Stock Export", States.Up, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
-        End If
+        Try
+            Dim list As TimeSpan = status.Data.linnworks_export_inventory
+            Dim linexpstockmsg As String = "A file containing all of the stock levels in Linnworks is sent from them to us every half hour. It is then imported into Brian and then the system will have up to date stock levels."
+            If list.Ticks = -1 Then
+                NoGoodStatus("Linnworks Exports", States.Mid)
+                AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago, Exported empty", linexpstockmsg)
+            ElseIf list.Minutes > 80 Then
+                NoGoodStatus("Linnworks Exports", States.Down)
+                AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago", linexpstockmsg)
+            ElseIf list.Minutes > 40 Then
+                NoGoodStatus("Linnworks Exports", States.Mid)
+                AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
+            Else
+                AddControl("Linnworks Stock Export", States.Up, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'MySQL Database
-        If Not status.Data.mysql_database Then
-            NoGoodStatus("MySQL Database", States.Down)
-            AddControl("MySQL Database", States.Down, InternalPanel, "", "The datbase hosted on Brian.")
-        Else
-            AddControl("MySQL Database", States.Up, InternalPanel, "", "The datbase hosted on Brian.")
-        End If
+        Try
+            If Not status.Data.mysql_database Then
+                NoGoodStatus("MySQL Database", States.Down)
+                AddControl("MySQL Database", States.Down, InternalPanel, "", "The datbase hosted on Brian.")
+            Else
+                AddControl("MySQL Database", States.Up, InternalPanel, "", "The datbase hosted on Brian.")
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
         'Sales Data
-        Dim sales As TimeSpan = status.Data.salesdata
-        Dim salesmsg As String = "DAtabase entries for items, based on the legacy Sales Data system which powers reorder and most of Inventory Control."
-        If sales.Ticks = -1 Then
-            NoGoodStatus("Sales Data", States.Down)
-            AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago, Exported empty", salesmsg)
-        ElseIf sales.Totalhours > 60 Then
-            NoGoodStatus("Sales Data", States.Down)
-            AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
-        ElseIf sales.Totalhours > 30 Then
-            NoGoodStatus("Sales Data", States.Mid)
-            AddControl("Sales Data", States.Mid, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
-        ElseIf sales.Totalhours > 24 Then
-            AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
-        Else
-            AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%h") + " hours, " + sales.ToString("%m") + " minutes ago", salesmsg)
-        End If
+        Try
+            Dim sales As TimeSpan = status.Data.salesdata
+            Dim salesmsg As String = "DAtabase entries for items, based on the legacy Sales Data system which powers reorder and most of Inventory Control."
+            If sales.Ticks = -1 Then
+                NoGoodStatus("Sales Data", States.Down)
+                AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago, Exported empty", salesmsg)
+            ElseIf sales.Totalhours > 60 Then
+                NoGoodStatus("Sales Data", States.Down)
+                AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+            ElseIf sales.Totalhours > 30 Then
+                NoGoodStatus("Sales Data", States.Mid)
+                AddControl("Sales Data", States.Mid, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+            ElseIf sales.Totalhours > 24 Then
+                AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
+            Else
+                AddControl("Sales Data", States.Up, InternalPanel, "last updated: " + sales.ToString("%h") + " hours, " + sales.ToString("%m") + " minutes ago", salesmsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
+
+        'Backup Data.
+        Try
+            Dim backup As TimeSpan = status.Data.Backup
+            Dim backupmsg As String = "A regular data backup containing data from the X and T drives."
+            If backup.Ticks = -1 Then
+                NoGoodStatus("Backup Data", States.Down)
+                AddControl("Backup Data", States.Down, InternalPanel, "last updated: " + backup.ToString("%d") + " day(s) " + backup.ToString("%h") + " hours" + " ago, Exported empty", backupmsg)
+            ElseIf backup.TotalHours > 96 Then
+                NoGoodStatus("Backup Data", States.Down)
+                AddControl("Backup Data", States.Down, InternalPanel, "last updated: " + backup.ToString("%d") + " day(s) " + backup.ToString("%h") + " hours" + " ago", backupmsg)
+            ElseIf backup.TotalHours > 72 Then
+                NoGoodStatus("Backup Data", States.Mid)
+                AddControl("Backup Data", States.Mid, InternalPanel, "last updated: " + backup.ToString("%d") + " day(s) " + backup.ToString("%h") + " hours" + " ago", backupmsg)
+            ElseIf backup.TotalHours > 24 Then
+                AddControl("Backup Data", States.Up, InternalPanel, "last updated: " + backup.ToString("%d") + " day(s) " + backup.ToString("%h") + " hours" + " ago", backupmsg)
+            Else
+                AddControl("Backup Data", States.Up, InternalPanel, "last updated: " + backup.ToString("%h") + " hours, " + backup.ToString("%m") + " minutes ago", backupmsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
 
     End Sub
 
@@ -274,6 +323,45 @@ Public Class Status
             AddControl("Old Server", States.Mid, ServersPanel, "Ping time: " + old.Milliseconds.ToString + "ms.", oldmsg)
         Else
             AddControl("Old Server", States.Up, ServersPanel, "Ping time: " + Math.Round(old.Milliseconds, 1).ToString + "ms.", oldmsg)
+        End If
+
+        'vhost-1
+        Dim vhost1 As TimeSpan = status.Data.vhost1
+        Dim vhost1msg As String = "VHost-1 is a server which runs the large data backups. It also hosts the virtual test server."
+        If vhost1.Ticks < 0 Then
+            NoGoodStatus("VHost-1 (not responding)", States.Down)
+            AddControl("VHost-1 ", States.Down, ServersPanel, "Did not respond within 100ms.", vhost1msg)
+        ElseIf vhost1.Milliseconds > 10 Then
+            NoGoodStatus("VHost-1 (slow)", States.Mid)
+            AddControl("VHost-1", States.Mid, ServersPanel, "Ping time: " + vhost1.Milliseconds.ToString + "ms.", vhost1msg)
+        Else
+            AddControl("VHost-1", States.Up, ServersPanel, "Ping time: " + Math.Round(vhost1.Milliseconds, 1).ToString + "ms.", vhost1msg)
+        End If
+
+        'vhost-2
+        Dim vhost2 As TimeSpan = status.Data.VHost2
+        Dim vhost2msg As String = "VHost-2 is a server which hosts the software that the PIs are connected to, along with other virtualised software."
+        If vhost2.Ticks < 0 Then
+            NoGoodStatus("VHost-2 (not responding)", States.Down)
+            AddControl("VHost-2 ", States.Down, ServersPanel, "Did not respond within 100ms.", vhost2msg)
+        ElseIf vhost2.Milliseconds > 10 Then
+            NoGoodStatus("VHost-2 (slow)", States.Mid)
+            AddControl("VHost-2", States.Mid, ServersPanel, "Ping time: " + vhost2.Milliseconds.ToString + "ms.", vhost2msg)
+        Else
+            AddControl("VHost-2", States.Up, ServersPanel, "Ping time: " + Math.Round(vhost2.Milliseconds, 1).ToString + "ms.", vhost2msg)
+        End If
+
+        'vhost-2
+        Dim TestServer As TimeSpan = status.Data.TestServer
+        Dim TestServermsg As String = "Test server allows IT to test software updates without affecting the main network"
+        If TestServer.Ticks < 0 Then
+            NoGoodStatus("Test Server (not responding)", States.Down)
+            AddControl("Test Server ", States.Down, ServersPanel, "Did not respond within 100ms.", TestServermsg)
+        ElseIf TestServer.Milliseconds > 10 Then
+            NoGoodStatus("Test Server (slow)", States.Mid)
+            AddControl("Test Server", States.Mid, ServersPanel, "Ping time: " + TestServer.Milliseconds.ToString + "ms.", TestServermsg)
+        Else
+            AddControl("Test Server", States.Up, ServersPanel, "Ping time: " + Math.Round(TestServer.Milliseconds, 1).ToString + "ms.", TestServermsg)
         End If
 
         ''Drop1
