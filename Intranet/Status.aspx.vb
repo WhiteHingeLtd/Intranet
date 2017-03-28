@@ -247,13 +247,13 @@ Public Class Status
         Else
             AddControl("Linnworks API", States.Up, ExternalPanel, "", LinApiMsg)
         End If
-        Dim LinEC2msg As String = "The EC2 forwarder is a Linnworks server which manages connections from us to their new database servers based on the Amazon Web Services Elastic Compute infrastructure. The amazon servers are extremely unlikely to be down, so if we\'re having issues with linnworks, it\'s probably down to this."
-        If Not status.Data.linnworks_api_ext Then
-            NoGoodStatus("Linnworks AWS EC2 Forwarder", States.Down)
-            AddControl("Linnworks AWS EC2 Forwarder", States.Down, ExternalPanel, "", LinEC2msg)
-        Else
-            AddControl("Linnworks AWS EC2 Forwarder", States.Up, ExternalPanel, "", LinEC2msg)
-        End If
+        'Dim LinEC2msg As String = "The EC2 forwarder is a Linnworks server which manages connections from us to their new database servers based on the Amazon Web Services Elastic Compute infrastructure. The amazon servers are extremely unlikely to be down, so if we\'re having issues with linnworks, it\'s probably down to this."
+        'If Not status.Data.linnworks_api_ext Then
+        '    NoGoodStatus("Linnworks AWS EC2 Forwarder", States.Down)
+        '    AddControl("Linnworks AWS EC2 Forwarder", States.Down, ExternalPanel, "", LinEC2msg)
+        'Else
+        '    AddControl("Linnworks AWS EC2 Forwarder", States.Up, ExternalPanel, "", LinEC2msg)
+        'End If
         Dim LinAuthmsg As String = "apps.linnworks.net is used to allow us to connect to Linnworks Services through the login prompt. That\'s essentially all it\'s used for. "
         If Not status.Data.linnworks_api_apps Then
             NoGoodStatus("Linnworks Authorization", States.Down)
