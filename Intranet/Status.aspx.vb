@@ -49,7 +49,7 @@ Public Class Status
             If skud.Minutes > 20 Then
                 NoGoodStatus("Sku Generator", States.Down)
                 AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
-            ElseIf skud.Minutes > 5 Then
+            ElseIf skud.Minutes > 9 Then
                 NoGoodStatus("Sku Generator", States.Mid)
                 AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
             Else
@@ -166,7 +166,24 @@ Public Class Status
         Catch ex As Exception
             AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
         End Try
-
+        'Location Auditing
+        Try
+            Dim locAudit As TimeSpan = status.Data.locationaudit
+            Dim locAuditMsg As String = "Database entries for the stock check and auditing system"
+            If locAudit.Ticks = -1 Then
+                NoGoodStatus("Location Auditing", States.Down)
+                AddControl("Location Auditing", States.Down, InternalPanel, "last updated: "+ locAudit.ToString("%h") + " hours" + " ago, Exported empty", locAuditMsg)
+            ElseIf locAudit.Minutes > 20 Then
+                NoGoodStatus("Location Auditing", States.Down)
+                AddControl("Location Auditing", States.Down, InternalPanel, "last updated: " + locAudit.Minutes.ToString + " minutes ago", locAuditMsg)
+            ElseIf locAudit.Minutes > 5 Then
+                AddControl("Location Auditing", States.Mid, InternalPanel, "last updated: " + locAudit.Minutes.ToString + " minutes ago", locAuditMsg)
+            Else
+                AddControl("Location Auditing", States.Up, InternalPanel, "last updated: " + locAudit.Seconds.ToString + " seconds ago", locAuditMsg)
+            End If
+        Catch ex As Exception
+            AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
+        End Try
         'Backup Data.
         Try
             Dim backup As TimeSpan = status.Data.Backup

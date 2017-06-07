@@ -15,8 +15,8 @@ Public Class Global_asax
 
         'Load the fucking skucollection.
 
-        Dim loader As New GenericDataController
-        Application("SkuCollection") = loader.SmartSkuCollLoad(False, "\\SUE\DFSRoot\AppData\Collections\")
+        'Dim loader As New GenericDataController
+        'Application("SkuCollection") = loader.SmartSkuCollLoad(False, "\\SUE\DFSRoot\AppData\Collections\")
     End Sub
 
 
