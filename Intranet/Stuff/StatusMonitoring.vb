@@ -33,7 +33,7 @@ Public Class StatusMonitoring
             linnworks_export_inventory = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\inventory.csv")
             mysql_database = WHLClasses.MySQL.TestConn.ToString.StartsWith("Connection to ")
             salesdata = (Now - (Date.ParseExact(WHLClasses.MySQL.SelectData("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
-            locationaudit = Now - Date.ParseExact(WHLClasses.MySQL.SelectData("SELECT DateOfEvent from whldata.locationaudit order by auditID desc limit 1;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)
+            locationaudit = (Now - DirectCast(WHLClasses.MySQL.SelectData("SELECT CAST(DateOfEvent as datetime) from whldata.locationaudit order by auditID desc limit 1;")(0)(0),DateTime))
             'Backup file
             Backup = CheckFileAge((New DirectoryInfo("\\vhost-1\E\T and X\")).GetFiles().OrderByDescending(Function(f As FileInfo) f.LastWriteTime).First().FullName)
 

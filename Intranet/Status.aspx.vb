@@ -368,18 +368,18 @@ Public Class Status
             AddControl("VHost-2", States.Up, ServersPanel, "Ping time: " + Math.Round(vhost2.Milliseconds, 1).ToString + "ms.", vhost2msg)
         End If
 
-        'vhost-2
-        Dim TestServer As TimeSpan = status.Data.TestServer
-        Dim TestServermsg As String = "Test server allows IT to test software updates without affecting the main network"
-        If TestServer.Ticks < 0 Then
-            NoGoodStatus("Test Server (not responding)", States.Down)
-            AddControl("Test Server ", States.Down, ServersPanel, "Did not respond within 100ms.", TestServermsg)
-        ElseIf TestServer.Milliseconds > 10 Then
-            NoGoodStatus("Test Server (slow)", States.Mid)
-            AddControl("Test Server", States.Mid, ServersPanel, "Ping time: " + TestServer.Milliseconds.ToString + "ms.", TestServermsg)
-        Else
-            AddControl("Test Server", States.Up, ServersPanel, "Ping time: " + Math.Round(TestServer.Milliseconds, 1).ToString + "ms.", TestServermsg)
-        End If
+        ''testserver
+        'Dim TestServer As TimeSpan = status.Data.TestServer
+        'Dim TestServermsg As String = "Test server allows IT to test software updates without affecting the main network"
+        'If TestServer.Ticks < 0 Then
+        '    NoGoodStatus("Test Server (not responding)", States.Down)
+        '    AddControl("Test Server ", States.Down, ServersPanel, "Did not respond within 100ms.", TestServermsg)
+        'ElseIf TestServer.Milliseconds > 10 Then
+        '    NoGoodStatus("Test Server (slow)", States.Mid)
+        '    AddControl("Test Server", States.Mid, ServersPanel, "Ping time: " + TestServer.Milliseconds.ToString + "ms.", TestServermsg)
+        'Else
+        '    AddControl("Test Server", States.Up, ServersPanel, "Ping time: " + Math.Round(TestServer.Milliseconds, 1).ToString + "ms.", TestServermsg)
+        'End If
 
         ''Drop1
         'Dim drop1 As TimeSpan = status.Data.mysql_backup
