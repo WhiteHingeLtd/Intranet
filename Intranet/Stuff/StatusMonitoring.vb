@@ -26,11 +26,20 @@ Public Class StatusMonitoring
     Public Class StatusObject
         Public Sub New()
             'Internals 
-            sku_generator = CheckFileAge("\\SUE\DFSRoot\AppData\Collections\Sku Collection 1.skus")
-            order_server_trays = CheckFileAge("\\SUE\DFSRoot\AppData\Trays\.trs")
-            order_server_orders = CheckFileAge("\\SUE\DFSRoot\AppData\Orders\.orddef")
-            linnworks_export_processed = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\processed.csv")
-            linnworks_export_inventory = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\inventory.csv")
+            sku_generator = CheckFileAge("\\VHOST-1\DFSRoot\AppData\Collections\Sku Collection 1.skus")
+            order_server_trays = CheckFileAge("\\VHOST-1\DFSRoot\AppData\Trays\.trs")
+            order_server_orders = CheckFileAge("\\VHOST-1\DFSRoot\AppData\Orders\.orddef")
+            Try
+                linnworks_export_processed = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\processed.csv")
+            Catch ex As Exception
+                linnworks_export_processed = TimeSpan.MaxValue
+            End Try
+            Try
+                linnworks_export_inventory = CheckFileAge("\\WIN-NOHLS1H9ER8\Data Storage\Linncloud\inventory.csv")
+            Catch ex As Exception
+                linnworks_export_inventory = TimeSpan.MaxValue
+            End Try
+            
             mysql_database = WHLClasses.MySQL.TestConn.ToString.StartsWith("Connection to ")
             salesdata = (Now - (Date.ParseExact(WHLClasses.MySQL.SelectData("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
             locationaudit = (Now - DirectCast(WHLClasses.MySQL.SelectData("SELECT CAST(DateOfEvent as datetime) from whldata.locationaudit order by auditID desc limit 1;")(0)(0),DateTime))
@@ -41,7 +50,7 @@ Public Class StatusMonitoring
             'Servers
             ian = PingServerTime("IAN")
             brian = PingServerTime("BRIAN")
-            sue = PingServerTime("SUE")
+            ' RIP SUE sue = PingServerTime("SUE")
             old_server = PingServerTime("SERVER")
             mysql_backup = PingServerTime("drop1.drops.ad.whitehinge.com", 400)
             vhost1 = PingServerTime("VHost-1")

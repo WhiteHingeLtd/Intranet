@@ -46,10 +46,10 @@ Public Class Status
         Try
             Dim skud As TimeSpan = status.Data.sku_generator
             Dim SkuGenMsg As String = "A file which contains most data for every item we stock. This is the file that almost all applications load and is the reason everything takes forever to start up."
-            If skud.Minutes > 20 Then
+            If skud.Minutes > 28 Then
                 NoGoodStatus("Sku Generator", States.Down)
                 AddControl("Sku Generator", States.Down, InternalPanel, "last updated: " + skud.ToString("%h") + " hour " + skud.ToString("%m") + " mins" + " ago", SkuGenMsg)
-            ElseIf skud.Minutes > 9 Then
+            ElseIf skud.Minutes > 14 Then
                 NoGoodStatus("Sku Generator", States.Mid)
                 AddControl("Sku Generator", States.Mid, InternalPanel, "last updated: " + skud.ToString("%m") + " mins " + skud.ToString("%s") + " secs" + " ago", SkuGenMsg)
             Else
@@ -83,7 +83,7 @@ Public Class Status
             If orddef.Minutes > 30 Then
                 NoGoodStatus("Order Server", States.Down)
                 AddControl("Order Server | Orders", States.Down, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
-            ElseIf orddef.Minutes > 5 Then
+            ElseIf orddef.Minutes > 21 Then
                 NoGoodStatus("Order Server", States.Mid)
                 AddControl("Order Server | Orders", States.Mid, InternalPanel, "last updated: " + orddef.ToString("%m") + " mins " + orddef.ToString("%s") + " secs" + " ago", OSOrdersMsg)
             Else
@@ -120,10 +120,10 @@ Public Class Status
             If list.Ticks = -1 Then
                 NoGoodStatus("Linnworks Exports", States.Mid)
                 AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago, Exported empty", linexpstockmsg)
-            ElseIf list.Minutes > 80 Then
+            ElseIf list.Minutes > 45 Then
                 NoGoodStatus("Linnworks Exports", States.Down)
                 AddControl("Linnworks Stock Export", States.Down, InternalPanel, "last updated: " + list.ToString("%h") + " hour(s) " + list.ToString("%m") + " mins" + " ago", linexpstockmsg)
-            ElseIf list.Minutes > 40 Then
+            ElseIf list.Minutes > 25 Then
                 NoGoodStatus("Linnworks Exports", States.Mid)
                 AddControl("Linnworks Stock Export", States.Mid, InternalPanel, "last updated: " + list.ToString("%m") + " minutes ago", linexpstockmsg)
             Else
@@ -137,9 +137,9 @@ Public Class Status
         Try
             If Not status.Data.mysql_database Then
                 NoGoodStatus("MySQL Database", States.Down)
-                AddControl("MySQL Database", States.Down, InternalPanel, "", "The datbase hosted on Brian.")
+                AddControl("MySQL Database", States.Down, InternalPanel, "", "The database hosted on Brian.")
             Else
-                AddControl("MySQL Database", States.Up, InternalPanel, "", "The datbase hosted on Brian.")
+                AddControl("MySQL Database", States.Up, InternalPanel, "", "The database hosted on Brian.")
             End If
         Catch ex As Exception
             AddControl("Sku Generator", States.NoHook, InternalPanel, "Unable to work out last update.")
@@ -152,10 +152,10 @@ Public Class Status
             If sales.Ticks = -1 Then
                 NoGoodStatus("Sales Data", States.Down)
                 AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago, Exported empty", salesmsg)
-            ElseIf sales.Totalhours > 60 Then
+            ElseIf sales.Totalhours > 50 Then
                 NoGoodStatus("Sales Data", States.Down)
                 AddControl("Sales Data", States.Down, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
-            ElseIf sales.Totalhours > 30 Then
+            ElseIf sales.Totalhours > 26 Then
                 NoGoodStatus("Sales Data", States.Mid)
                 AddControl("Sales Data", States.Mid, InternalPanel, "last updated: " + sales.ToString("%d") + " day(s) " + sales.ToString("%h") + " hours" + " ago", salesmsg)
             ElseIf sales.Totalhours > 24 Then
@@ -173,10 +173,10 @@ Public Class Status
             If locAudit.Ticks = -1 Then
                 NoGoodStatus("Location Auditing", States.Down)
                 AddControl("Location Auditing", States.Down, InternalPanel, "last updated: "+ locAudit.ToString("%h") + " hours" + " ago, Exported empty", locAuditMsg)
-            ElseIf locAudit.Minutes > 20 Then
+            ElseIf locAudit.Minutes > 180 Then
                 NoGoodStatus("Location Auditing", States.Down)
                 AddControl("Location Auditing", States.Down, InternalPanel, "last updated: " + locAudit.Minutes.ToString + " minutes ago", locAuditMsg)
-            ElseIf locAudit.Minutes > 5 Then
+            ElseIf locAudit.Minutes > 60 Then
                 AddControl("Location Auditing", States.Mid, InternalPanel, "last updated: " + locAudit.Minutes.ToString + " minutes ago", locAuditMsg)
             Else
                 AddControl("Location Auditing", States.Up, InternalPanel, "last updated: " + locAudit.Seconds.ToString + " seconds ago", locAuditMsg)
@@ -316,18 +316,18 @@ Public Class Status
 
 
 
-        'Sue
-        Dim sue As TimeSpan = status.Data.sue
-        Dim Suemsg As String = "Sue is primarily a file server, storing all of the application data like analytics and order data, and photos for the listing process. "
-        If sue.Ticks < 0 Then
-            NoGoodStatus("SUE (not responding)", States.Down)
-            AddControl("SUE", States.Down, ServersPanel, "Did not respond within 100ms.", Suemsg)
-        ElseIf sue.Milliseconds > 10 Then
-            NoGoodStatus("SUE (slow)", States.Mid)
-            AddControl("SUE", States.Mid, ServersPanel, "Ping time: " + sue.Milliseconds.ToString + "ms.", Suemsg)
-        Else
-            AddControl("SUE", States.Up, ServersPanel, "Ping time: " + Math.Round(sue.Milliseconds, 1).ToString + "ms.", Suemsg)
-        End If
+        ''Sue
+        'Dim sue As TimeSpan = status.Data.sue
+        'Dim Suemsg As String = "Sue is primarily a file server, storing all of the application data like analytics and order data, and photos for the listing process. "
+        'If sue.Ticks < 0 Then
+        '    NoGoodStatus("SUE (not responding)", States.Down)
+        '    AddControl("SUE", States.Down, ServersPanel, "Did not respond within 100ms.", Suemsg)
+        'ElseIf sue.Milliseconds > 10 Then
+        '    NoGoodStatus("SUE (slow)", States.Mid)
+        '    AddControl("SUE", States.Mid, ServersPanel, "Ping time: " + sue.Milliseconds.ToString + "ms.", Suemsg)
+        'Else
+        '    AddControl("SUE", States.Up, ServersPanel, "Ping time: " + Math.Round(sue.Milliseconds, 1).ToString + "ms.", Suemsg)
+        'End If
 
         'Old Server
         Dim old As TimeSpan = status.Data.old_server
