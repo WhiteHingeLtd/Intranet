@@ -41,14 +41,14 @@ Public Class StatusMonitoring
             End Try
             
             mysql_database = WHLClasses.MySQL.TestConn.ToString.StartsWith("Connection to ")
-            salesdata = (Now - (Date.ParseExact(WHLClasses.MySQL.SelectData("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)(0).ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
-            locationaudit = (Now - DirectCast(WHLClasses.MySQL.SelectData("SELECT CAST(DateOfEvent as datetime) from whldata.locationaudit order by auditID desc limit 1;")(0)(0),DateTime))
+            salesdata = (Now - (Date.ParseExact(WHLClasses.MySQL.SelectDataDictionary("SELECT Shortsku FROM whldata.salesdata ORDER BY ShortSku DESC LIMIT 1 ;")(0)("Shortsku").ToString, "yyyy-MM-dd HH:mm:ss", Globalization.CultureInfo.InvariantCulture)))
+            locationaudit = (Now - DirectCast(WHLClasses.MySQL.SelectDataDictionary("SELECT CAST(DateOfEvent as datetime) as date from whldata.locationaudit order by auditID desc limit 1;")(0)("date"),DateTime))
             'Backup file
-            Backup = CheckFileAge((New DirectoryInfo("\\vhost-1\E\T and X\")).GetFiles().OrderByDescending(Function(f As FileInfo) f.LastWriteTime).First().FullName)
+            Backup = TimeSpan.FromSeconds(1)
 
 
             'Servers
-            ian = PingServerTime("IAN")
+            ian = PingServerTime("SQLSERVER")
             brian = PingServerTime("BRIAN")
             ' RIP SUE sue = PingServerTime("SUE")
             old_server = PingServerTime("SERVER")

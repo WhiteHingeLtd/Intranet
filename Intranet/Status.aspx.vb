@@ -209,46 +209,7 @@ Public Class Status
     End Sub
 
     Public Sub CheckExternals()
-        ''eBay.co.uk
-        'If Not status.Data.ebay Then
-        '    NoGoodStatus("Ebay.co.uk", States.Down)
-        '    AddControl("Ebay UK", States.Down, ExternalPanel, "", "Ebay.co.uk")
-        'Else
-        '    AddControl("Ebay UK", States.Up, ExternalPanel, "", "Ebay.co.uk")
-        'End If
-        ''eBay API
-        ''If Not status.Data.ebay_api Then
-        ''    NoGoodStatus("Ebay API", States.Down)
-        ''    AddControl("Ebay API", States.Down, ExternalPanel)
-        ''Else
-        ''    AddControl("Ebay API", States.Up, ExternalPanel)
-        ''End If
 
-        ''Amazon
-
-        'If Not status.Data.amazon Then
-        '    NoGoodStatus("Amazon UK", States.Down)
-        '    AddControl("Amazon UK", States.Down, ExternalPanel, "", "Amazon.co.uk")
-        'Else
-        '    AddControl("Amazon UK", States.Up, ExternalPanel, "", "Amazon.co.uk")
-        'End If
-        ''Amazon API
-        'If Not status.Data.amazon_productapi Then
-        '    NoGoodStatus("Amazon API", States.Down)
-        '    AddControl("Amazon API", States.Down, ExternalPanel)
-        'Else
-        '    AddControl("Amazon API", States.Up, ExternalPanel)
-        'End If
-
-        'LINNWORKS
-        ''Com
-        'If Not status.Data.linnworks_com Then
-        '    NoGoodStatus("Linnworks.com", States.Down)
-        '    AddControl("Linnworks", States.Down, ExternalPanel)
-        'Else
-        '    AddControl("Linnworks", States.Up, ExternalPanel)
-        'End If
-        'Net
         Dim LinNetMsg As String = "This is the main Linnworks.net site. Nothing more really."
         If Not status.Data.linnworks_net Then
             NoGoodStatus("Linnworks.net", States.Down)
@@ -264,20 +225,7 @@ Public Class Status
         Else
             AddControl("Linnworks API", States.Up, ExternalPanel, "", LinApiMsg)
         End If
-        'Dim LinEC2msg As String = "The EC2 forwarder is a Linnworks server which manages connections from us to their new database servers based on the Amazon Web Services Elastic Compute infrastructure. The amazon servers are extremely unlikely to be down, so if we\'re having issues with linnworks, it\'s probably down to this."
-        'If Not status.Data.linnworks_api_ext Then
-        '    NoGoodStatus("Linnworks AWS EC2 Forwarder", States.Down)
-        '    AddControl("Linnworks AWS EC2 Forwarder", States.Down, ExternalPanel, "", LinEC2msg)
-        'Else
-        '    AddControl("Linnworks AWS EC2 Forwarder", States.Up, ExternalPanel, "", LinEC2msg)
-        'End If
-        Dim LinAuthmsg As String = "apps.linnworks.net is used to allow us to connect to Linnworks Services through the login prompt. That\'s essentially all it\'s used for. "
-        If Not status.Data.linnworks_api_apps Then
-            NoGoodStatus("Linnworks Authorization", States.Down)
-            AddControl("Linnworks Authorization", States.Down, ExternalPanel, "", LinAuthmsg)
-        Else
-            AddControl("Linnworks Authorization", States.Up, ExternalPanel, "", LinAuthmsg)
-        End If
+
 
     End Sub
 
@@ -286,15 +234,15 @@ Public Class Status
 
         'IAN
         Dim ian As TimeSpan = status.Data.ian
-        Dim ianmsg As String = "Ian looks after a few user profiles, but is mostly in charge of the order system. Ian contains services such as the Order server and Sku Generator, and also holds the majority of office user profiles."
+        Dim ianmsg As String = "SQLSERVER looks after a few user profiles, but is mostly in charge of the order system. Ian contains services such as the Order server and Sku Generator, and also holds the majority of office user profiles."
         If ian.Ticks < 0 Then
-            NoGoodStatus("IAN (not responding)", States.Down)
-            AddControl("IAN", States.Down, ServersPanel, "Did not respond within 100ms.", ianmsg)
+            NoGoodStatus("SQLSERVER (not responding)", States.Down)
+            AddControl("SQLSERVER", States.Down, ServersPanel, "Did not respond within 100ms.", ianmsg)
         ElseIf ian.Milliseconds > 10 Then
-            NoGoodStatus("IAN (slow)", States.Mid)
-            AddControl("IAN", States.Mid, ServersPanel, "Ping time: " + ian.Milliseconds.ToString + "ms.", ianmsg)
+            NoGoodStatus("SQLSERVER (slow)", States.Mid)
+            AddControl("SQLSERVER", States.Mid, ServersPanel, "Ping time: " + ian.Milliseconds.ToString + "ms.", ianmsg)
         Else
-            AddControl("IAN", States.Up, ServersPanel, "Ping time: " + Math.Round(ian.Milliseconds, 1).ToString + "ms.", ianmsg)
+            AddControl("SQLSERVER", States.Up, ServersPanel, "Ping time: " + Math.Round(ian.Milliseconds, 1).ToString + "ms.", ianmsg)
         End If
 
         'Brian
@@ -399,11 +347,11 @@ Public Class Status
         If Allgood = States.Up Then
             'Jumbotron
             JumboStatus.Text = "Fully Operational"
-            JumboSubtext.Text = "Everything appears to be working fine."
+            JumboSubtext.Text = "Everything appears to be working fine. Never Fear."
             JumbrotronBG.BackColor = Drawing.Color.PaleGreen
         ElseIf Allgood = States.Mid Then
             JumboStatus.Text = "Mild issues"
-            JumboSubtext.Text = "Something is responding slowly."
+            JumboSubtext.Text = "Something is responding slowly. There is no need to fear"
             JumbrotronBG.BackColor = Drawing.Color.PaleGoldenrod
         Else
             'Compile list of bad ones.
@@ -415,7 +363,7 @@ Public Class Status
             bads = bads.Replace(", #", " ")
             'Jumbotron
             JumboStatus.Text = "Limited Availability"
-            JumboSubtext.Text = bads + "are all having issues. See below for more details."
+            JumboSubtext.Text = bads + "are all having issues. See below for more details. Start fearing"
             JumbrotronBG.BackColor = Drawing.Color.OrangeRed
         End If
     End Sub
